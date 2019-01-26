@@ -11,5 +11,5 @@ type ParkedCar struct {
 }
 
 func (p *ParkedCar) String() string {
-	return fmt.Sprintf("%d\t%s\t%s", p.Slot, p.RegNumber, p.Color)
+	return fmt.Sprintf("%d\t%s\t%s", p.Slot+1, p.RegNumber, p.Color)
 }

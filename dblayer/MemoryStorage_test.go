@@ -120,3 +120,42 @@ func TestDelete(t *testing.T) {
 		t.Fail()
 	}
 }
+func TestGetEmptyOnFull(t *testing.T) {
+	base := NewMemStorage(2)
+	base.Save(DummyStruct{0})
+	base.Save(DummyStruct{1})
+	ii := base.GetEmptyIndex()
+	if ii != -1 {
+		t.Fail()
+	}
+}
+func TestIterator(t *testing.T) {
+	base := NewMemStorage(2)
+	cap1 := base.GetCap()
+	if cap1 != 2 {
+		t.Fail()
+	}
+	base.Save(DummyStruct{0})
+	base.Save(DummyStruct{1})
+	iterator := base.GetIterator()
+	counter := 0
+	for iterator.HasNext() {
+		item1 := iterator.Next()
+		if item1.(DummyStruct).Id != counter {
+			t.Log("Salah counter")
+			t.Fail()
+		}
+		counter++
+	}
+	base.Delete(0)
+	iterator = base.GetIterator()
+	counter = 1
+	for iterator.HasNext() {
+		item1 := iterator.Next()
+		if item1.(DummyStruct).Id != counter {
+			t.Log("Salah counter")
+			t.Fail()
+		}
+		counter++
+	}
+}
